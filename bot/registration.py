@@ -65,7 +65,7 @@ def phone_number_text(update, context):
     if match is None:
         return _to_phone_number(update, context)
     phone_number = match.group()
-    user = TelegramUser.objects.create(name=context.user_data['registration']['name'], 
+    user = TelegramUser.objects.create(id=message.from_user.id, name=context.user_data['registration']['name'], 
                                        phone_number=phone_number,
                                        language=context.user_data['registration']['language'])
     del context.user_data['registration']
@@ -86,7 +86,7 @@ def phone_number_contact(update, context):
 
 
 registration_conversation_handler = ConversationHandler(
-    entry_points=CommandHandler('start', start),
+    entry_points=[CommandHandler('start', start)],
     states={
         LANGUAGE: [MessageHandler(Filters.text, language)],
         NAME: [MessageHandler(Filters.text, name)],
