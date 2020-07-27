@@ -1,6 +1,5 @@
 import os
 import json
-from . import utils
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
