@@ -1,7 +1,7 @@
 from charity.models import TelegramUser
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, Filters
 from .resources import strings, keyboards
-from .utils import Navigation
+from bot.utils import Navigation
 import re
 
 
