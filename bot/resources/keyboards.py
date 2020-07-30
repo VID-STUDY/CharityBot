@@ -14,14 +14,29 @@ def get_keyboard(key, language='ru') -> Union[ReplyKeyboardRemove, ReplyKeyboard
         keyboard = [[KeyboardButton(get_string('phone', language), request_contact=True)]]
         return _create_keyboard(keyboard)
     elif key == 'main_menu':
-        keybaord = [
+        keyboard = [
             [get_string('menu.need_help', language), get_string('menu.can_help', language)],
             [get_string('menu.give_away', language)],
             [get_string('menu.share', language)],
             [get_string('menu.chage_language', language)]
         ]
-        return _create_keyboard(keybaord)
+        return _create_keyboard(keyboard)
     elif key == 'remove':
         return ReplyKeyboardRemove()
+    elif key == 'need_help.type':
+        keyboard = [
+            [get_string('products', language), get_string('medicines', language)],
+            [get_string('cancel', language)]
+        ]
+        return _create_keyboard(keyboard)
+    elif key == 'need_help.description':
+        keyboard = [[get_string('cancel', language)]]
+        return _create_keyboard(keyboard)
+    elif key == 'need_help.location':
+        keyboard = [
+            [KeyboardButton(get_string('location', language), request_location=True)],
+            [get_string('cancel', language)]
+        ]
+        return _create_keyboard(keyboard)
     else:
         return _create_keyboard([['no_keyboard']])
