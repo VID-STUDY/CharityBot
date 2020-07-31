@@ -18,3 +18,11 @@ def get_string(key, language='ru') -> str:
         return _strings_uz.get(key, 'no_string')
     else:
         raise Exception('Invalid language')
+
+
+def from_help_request_distance(request: dict, language: str) -> str:
+    distance = request['distance']
+    request = request['request']
+    return get_string('help_request.template', language).format(distance=distance, name=request.user.name, 
+                                                                type=request.help_type,
+                                                                description=request.description)

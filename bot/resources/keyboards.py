@@ -2,6 +2,8 @@ from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardBut
 from .strings import get_string
 from typing import Union, Optional
 
+from charity.models import HelpRequest
+
 
 def _create_keyboard(keyboard: list, one_time: bool = False) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, one_time_keyboard=one_time)
@@ -38,5 +40,19 @@ def get_keyboard(key, language='ru') -> Union[ReplyKeyboardRemove, ReplyKeyboard
             [get_string('cancel', language)]
         ]
         return _create_keyboard(keyboard)
+    elif key == 'can_help.location':
+        keyboard = [
+            [KeyboardButton(get_string('location', language), request_location=True)],
+            [get_string('cancel', language)]
+        ]
+        return _create_keyboard(keyboard)
     else:
         return _create_keyboard([['no_keyboard']])
+
+
+def from_help_request_keyboard(request: HelpRequest, language) -> InlineKeyboardMarkup:
+    keyboard = [
+        [InlineKeyboardButton(get_string('help', language), callback_data='help:' + str(request.id))],
+        [InlineKeyboardButton(get_string('complain', language), callback_data='complain:' + str(request.id))]
+    ]
+    return InlineKeyboardMarkup(keyboard)
