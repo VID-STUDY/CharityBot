@@ -1,5 +1,5 @@
-from telegram.ext import ConversationHandler, MessageHandler, Filters
-from telegram import ParseMode
+from telegram.ext import ConversationHandler, MessageHandler, Filters, CallbackQueryHandler
+from telegram import ParseMode, Update, CallbackQuery
 
 from bot.utils import Navigation, Geolocation, CharityFilters
 from charity.models import TelegramUser, GiveAwayOffer
@@ -128,6 +128,39 @@ def cancel(update, context):
     return ConversationHandler.END
 
 
+def get_it_for_free(update, context):
+    query = update.callback_query
+    id = query.data.split(':')[1]
+    try:
+        offer = GiveAwayOffer.objects.get(pk=int(id))
+    except GiveAwayOffer.DoesNotExist:
+        return
+    owner = offer.user
+    user = TelegramUser.objects.get(pk=query.message.chat_id)
+    contact_message = strings.from_user_contact_message(user, offer, owner.language)
+    contact_keyboard = keyboards.from_offer_give_away_contact_keyboard(offer, owner.language)
+    context.bot.send_message(chat_id=user.id, text=contact_message, reply_markup=contact_keyboard, parse_mode=ParseMode.HTML)
+    contact_sended_message = strings.get_string('give_away.contact_sended', user.language)
+    message_text = query.message.caption
+    message_text += contact_sended_message
+    query.edit_message_caption(caption=message_text)
+    query.answer()
+
+
+def give_it_away(update, context):
+    query = update.callback_query
+    id = query.data.split(':')[1]
+    try:
+        offer = GiveAwayOffer.objects.get(pk=int(id))
+    except GiveAwayOffer.DoesNotExist:
+        return
+    user = offer.user
+    offer.delete()
+    deleted_message = strings.get_string('give_away.offer_deleted', user.language)
+    query.answer(text=deleted_message, show_alert=True)
+    context.bot.delete_message(chat_id=query.from_user.id, message_id=query.message.message_id)
+
+
 give_away_conversation = ConversationHandler(
     entry_points=[MessageHandler(CharityFilters.GiveAwayFiler(), give_away)],
     states={
@@ -140,3 +173,6 @@ give_away_conversation = ConversationHandler(
     },
     fallbacks=[MessageHandler(CharityFilters.CancelFilter(), cancel)]
 )
+
+get_it_for_free_handler = CallbackQueryHandler(get_it_for_free, pattern=r'^get_it_for_free:.*')
+give_it_away_handler = CallbackQueryHandler(give_it_away, pattern=r'^give_it_away:.*')

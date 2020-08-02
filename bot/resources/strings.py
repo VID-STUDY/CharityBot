@@ -1,6 +1,8 @@
 import os
 import json
 
+from charity.models import TelegramUser, GiveAwayOffer
+
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
 # Load strings from json
@@ -33,3 +35,12 @@ def from_give_away_offer_distance(offer: dict, language: str) -> str:
     return get_string('give_away_offer.template', language).format(distance=distance, name=offer.user.name,
                                                                    type=offer.give_away_type,
                                                                    description=offer.description)
+
+def from_user_contact_message(user: TelegramUser, offer: GiveAwayOffer, language):
+    return get_string('give_away.contact_template', language).format(
+        type=offer.give_away_type,
+        description=offer.description,
+        name=user.name,
+        phone=user.phone_number,
+        id=user.id
+    )

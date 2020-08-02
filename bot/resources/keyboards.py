@@ -92,9 +92,16 @@ def from_help_request_keyboard(request: HelpRequest, language) -> InlineKeyboard
     return InlineKeyboardMarkup(keyboard)
 
 
-def from_give_away_offer_keybaord(offer: GiveAwayOffer, language) -> InlineKeyboardButton:
+def from_give_away_offer_keybaord(offer: GiveAwayOffer, language) -> InlineKeyboardMarkup:
     keyboard = [
         [InlineKeyboardButton(get_string('get_it_for_free', language), callback_data='get_it_for_free:' + str(offer.id))]
-        [InlineKeyboardButton(get_string('complain', language), callback_data='get_it_for_free_complain:' + str(request.id))]
     ]
     return InlineKeyboardMarkup(keyboard)
+
+
+def from_offer_give_away_contact_keyboard(offer: GiveAwayOffer, language: str) -> InlineKeyboardMarkup:
+    keybaord = [
+        [InlineKeyboardButton(get_string('give_it_away', language), callback_data='give_it_away:' + str(offer.id))],
+        [InlineKeyboardButton(get_string('complain', language), callback_data='give_it_away_complain:' + str(offer.id))]
+    ]
+    return InlineKeyboardMarkup(keybaord)
