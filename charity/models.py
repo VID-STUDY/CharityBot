@@ -27,3 +27,9 @@ class GiveAwayOffer(models.Model):
     description = models.CharField(max_length=1024)
     photo_telegram_id = models.CharField(max_length=150, null=True, blank=True)
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
+
+
+class TelegramUserComplain(models.Model):
+    text = models.CharField(max_length=500)
+    user_from = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True)
+    user_to = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True)
