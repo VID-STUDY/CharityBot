@@ -27,7 +27,7 @@ def can_help_location(update, context):
     location = update.message.location
     latitude = location.latitude
     longitude = location.longitude
-    all_help_requests = HelpRequest.objects.all()
+    all_help_requests = HelpRequest.objects.filter(hidden=False)
     results = []
     for request in all_help_requests:
         distance = Geolocation.distance_between_two_points((latitude, longitude), (request.latitude, request.longitude))
