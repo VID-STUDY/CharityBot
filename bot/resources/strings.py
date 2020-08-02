@@ -26,3 +26,10 @@ def from_help_request_distance(request: dict, language: str) -> str:
     return get_string('help_request.template', language).format(distance=distance, name=request.user.name, 
                                                                 type=request.help_type,
                                                                 description=request.description)
+
+def from_give_away_offer_distance(offer: dict, language: str) -> str:
+    distance = offer['distance']
+    offer = offer['offer']
+    return get_string('give_away_offer.template', language).format(distance=distance, name=offer.user.name,
+                                                                   type=offer.give_away_type,
+                                                                   description=offer.description)

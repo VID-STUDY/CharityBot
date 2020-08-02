@@ -25,6 +25,11 @@ class CharityFilters:
             return message.text and ((strings.get_string('menu.can_help', 'ru') in message.text) or 
                                     strings.get_string('menu.can_help', 'uz') in message.text)
     
+    class GiveAwayFiler(BaseFilter):
+        def filter(self, message):
+            return message.text and ((strings.get_string('menu.give_away', 'ru') in message.text) or
+                                    strings.get_string('menu.give_away', 'uz') in message.text)
+    
     class CancelFilter(BaseFilter):
         def filter(self, message):
             return message.text and ((strings.get_string('cancel', 'ru') in message.text) or

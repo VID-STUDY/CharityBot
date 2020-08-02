@@ -2,7 +2,7 @@ from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardBut
 from .strings import get_string
 from typing import Union, Optional
 
-from charity.models import HelpRequest
+from charity.models import HelpRequest, GiveAwayOffer
 
 
 def _create_keyboard(keyboard: list, one_time: bool = False) -> ReplyKeyboardMarkup:
@@ -46,6 +46,40 @@ def get_keyboard(key, language='ru') -> Union[ReplyKeyboardRemove, ReplyKeyboard
             [get_string('cancel', language)]
         ]
         return _create_keyboard(keyboard)
+    elif key == 'give_away.start':
+        keyboard = [
+            [get_string('give_away.give', language)],
+            [get_string('give_away.get', language)]
+        ]
+        return _create_keyboard(keyboard)
+    elif key == 'give_away.type':
+        keyboard = [
+            [get_string('products', language), get_string('medicines', language)],
+            [get_string('cancel', language)]
+        ]
+        return _create_keyboard(keyboard)
+    elif key == 'give_away.description':
+        keyboard = [
+            [get_string('cancel', language)]
+        ]
+        return _create_keyboard(keyboard)
+    elif key == 'give_away.image':
+        keyboard = [
+            [get_string('cancel', language)]
+        ]
+        return _create_keyboard(keyboard)
+    elif key == 'give_away.give_location':
+        keyboard = [
+            [KeyboardButton(get_string('location', language), request_location=True)],
+            [get_string('cancel', language)]
+        ]
+        return _create_keyboard(keyboard)
+    elif key == 'give_away.get_location':
+        keyboard = [
+            [KeyboardButton(get_string('location', language), request_location=True)],
+            [get_string('cancel', language)]
+        ]
+        return _create_keyboard(keyboard)
     else:
         return _create_keyboard([['no_keyboard']])
 
@@ -54,5 +88,13 @@ def from_help_request_keyboard(request: HelpRequest, language) -> InlineKeyboard
     keyboard = [
         [InlineKeyboardButton(get_string('help', language), callback_data='help:' + str(request.id))],
         [InlineKeyboardButton(get_string('complain', language), callback_data='complain:' + str(request.id))]
+    ]
+    return InlineKeyboardMarkup(keyboard)
+
+
+def from_give_away_offer_keybaord(offer: GiveAwayOffer, language) -> InlineKeyboardButton:
+    keyboard = [
+        [InlineKeyboardButton(get_string('get_it_for_free', language), callback_data='get_it_for_free:' + str(offer.id))]
+        [InlineKeyboardButton(get_string('complain', language), callback_data='get_it_for_free_complain:' + str(request.id))]
     ]
     return InlineKeyboardMarkup(keyboard)
