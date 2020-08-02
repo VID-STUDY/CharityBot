@@ -2,7 +2,7 @@ from telegram import ReplyKeyboardMarkup, ReplyKeyboardRemove, InlineKeyboardBut
 from .strings import get_string
 from typing import Union, Optional
 
-from charity.models import HelpRequest, GiveAwayOffer
+from charity.models import HelpRequest, GiveAwayOffer, TelegramUser
 
 
 def _create_keyboard(keyboard: list, one_time: bool = False) -> ReplyKeyboardMarkup:
@@ -99,9 +99,9 @@ def from_give_away_offer_keybaord(offer: GiveAwayOffer, language) -> InlineKeybo
     return InlineKeyboardMarkup(keyboard)
 
 
-def from_offer_give_away_contact_keyboard(offer: GiveAwayOffer, language: str) -> InlineKeyboardMarkup:
+def from_offer_give_away_contact_keyboard(offer: GiveAwayOffer, user: TelegramUser, language: str) -> InlineKeyboardMarkup:
     keybaord = [
         [InlineKeyboardButton(get_string('give_it_away', language), callback_data='give_it_away:' + str(offer.id))],
-        [InlineKeyboardButton(get_string('complain', language), callback_data='give_it_away_complain:' + str(offer.id))]
+        [InlineKeyboardButton(get_string('complain', language), callback_data='give_it_away_complain:' + str(user.id))]
     ]
     return InlineKeyboardMarkup(keybaord)

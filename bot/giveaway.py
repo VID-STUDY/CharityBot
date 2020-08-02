@@ -138,7 +138,7 @@ def get_it_for_free(update, context):
     owner = offer.user
     user = TelegramUser.objects.get(pk=query.message.chat_id)
     contact_message = strings.from_user_contact_message(user, offer, owner.language)
-    contact_keyboard = keyboards.from_offer_give_away_contact_keyboard(offer, owner.language)
+    contact_keyboard = keyboards.from_offer_give_away_contact_keyboard(offer, user, owner.language)
     context.bot.send_message(chat_id=user.id, text=contact_message, reply_markup=contact_keyboard, parse_mode=ParseMode.HTML)
     contact_sended_message = strings.get_string('give_away.contact_sended', user.language)
     message_text = query.message.caption
