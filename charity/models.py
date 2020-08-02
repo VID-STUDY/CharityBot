@@ -19,3 +19,11 @@ class HelpRequest(models.Model):
     class Meta:
         get_latest_by = 'created_at'
 
+
+class GiveAwayOffer(models.Model):
+    latitude = models.FloatField()
+    longitude = models.FloatField()
+    give_away_type = models.CharField(max_length=20)
+    description = models.CharField(max_length=1024)
+    photo_telegram_id = models.CharField(max_length=150, null=True, blank=True)
+    user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
