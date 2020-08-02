@@ -20,6 +20,12 @@ class HelpRequest(models.Model):
         get_latest_by = 'created_at'
 
 
+class HelpRequestComplain(models.Model):
+    text = models.CharField(max_length=500)
+    user_from = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True)
+    help_request = models.ForeignKey(HelpRequest, on_delete=models.CASCADE)
+
+
 class GiveAwayOffer(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -31,5 +37,5 @@ class GiveAwayOffer(models.Model):
 
 class TelegramUserComplain(models.Model):
     text = models.CharField(max_length=500)
-    user_from = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True)
-    user_to = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True)
+    user_from = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True, related_name='owned_user_complains')
+    user_to = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True, related_name='presented_complains')
