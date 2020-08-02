@@ -80,6 +80,11 @@ def get_keyboard(key, language='ru') -> Union[ReplyKeyboardRemove, ReplyKeyboard
             [get_string('cancel', language)]
         ]
         return _create_keyboard(keyboard)
+    elif key == 'complain':
+        keyboard = [
+            [get_string('cancel', language)]
+        ]
+        return _create_keyboard(keyboard)
     else:
         return _create_keyboard([['no_keyboard']])
 
