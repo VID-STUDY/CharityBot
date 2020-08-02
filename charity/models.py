@@ -41,3 +41,11 @@ class TelegramUserComplain(models.Model):
     text = models.CharField(max_length=500)
     user_from = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True, related_name='owned_user_complains')
     user_to = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True, related_name='presented_complains')
+
+
+
+class HelpRequestReaction(models.Model):
+    help_request = models.OneToOneField(HelpRequest, on_delete=models.CASCADE)
+    owner_reaction = models.CharField(max_length=5, blank=True, null=True)
+    helper_reaction = models.CharField(max_length=5, blank=True, null=True)
+    helper_id = models.IntegerField()
