@@ -141,9 +141,9 @@ def get_it_for_free(update, context):
     contact_keyboard = keyboards.from_offer_give_away_contact_keyboard(offer, user, owner.language)
     context.bot.send_message(chat_id=user.id, text=contact_message, reply_markup=contact_keyboard, parse_mode=ParseMode.HTML)
     contact_sended_message = strings.get_string('give_away.contact_sended', user.language)
-    message_text = query.message.caption
+    message_text = query.message.caption_html
     message_text += contact_sended_message
-    query.edit_message_caption(caption=message_text)
+    query.edit_message_caption(caption=message_text, parse_mode=ParseMode.HTML)
     query.answer()
 
 
