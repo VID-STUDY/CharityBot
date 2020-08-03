@@ -75,6 +75,7 @@ def phone_number_text(update, context):
 
 
 def phone_number_contact(update, context):
+    message = update.message
     phone_number = update.message.contact.phone_number
     user = TelegramUser.objects.create(id=message.from_user.id, name=context.user_data['registration']['name'], 
                                        phone_number=phone_number,
