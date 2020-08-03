@@ -1,7 +1,7 @@
 import os
 import json
 
-from charity.models import TelegramUser, GiveAwayOffer
+from charity.models import TelegramUser, GiveAwayOffer, HelpRequest
 
 _basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -43,4 +43,35 @@ def from_user_contact_message(user: TelegramUser, offer: GiveAwayOffer, language
         name=user.name,
         phone=user.phone_number,
         id=user.id
+    )
+
+
+def from_helper_request_owner_notification(help_request: HelpRequest, helper: TelegramUser, language) -> str:
+    return get_string('need_help.owner_notification', language).format(
+        type=help_request.help_type,
+        description=help_request.description,
+        name=helper.name
+    )
+
+
+def notification_sent_message(owner: TelegramUser, language) -> str:
+    return get_string('can_help.notification_sent', language).format(
+        phone=owner.phone_number,
+        id=owner.id
+    )
+
+
+def reaction_owner_message(help_request: HelpRequest, helper: TelegramUser, language) -> str:
+    return get_string('reaction.owner', language).format(
+        type=help_request.help_type,
+        description=help_request.description,
+        name=helper.name
+    )
+
+
+def reaction_helper_message(help_request: HelpRequest, owner:TelegramUser, language) -> str:
+    return get_string('reaction.helper', language).format(
+        type=help_request.help_type,
+        description=help_request.description,
+        name=owner.name
     )

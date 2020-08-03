@@ -1,6 +1,6 @@
 from telegram.ext import Updater
 
-from bot import registration, needhelp, canhelp, giveaway, complains
+from bot import registration, needhelp, canhelp, giveaway, complains, help
 
 from os import getenv
 
@@ -16,3 +16,6 @@ dp.add_handler(giveaway.get_it_for_free_handler)
 dp.add_handler(giveaway.give_it_away_handler)
 dp.add_handler(complains.telegram_user_complain_conversation)
 dp.add_handler(complains.help_request_complain_conversation)
+dp.add_handler(help.help_handler)
+dp.add_handler(help.owner_reaction_handler)
+dp.add_handler(help.helper_reaction_handler)
