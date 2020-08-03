@@ -45,7 +45,11 @@ class TelegramUserComplain(models.Model):
 
 
 class HelpRequestReaction(models.Model):
-    help_request = models.OneToOneField(HelpRequest, on_delete=models.CASCADE)
+    help_request = models.OneToOneField(HelpRequest, on_delete=models.CASCADE, related_name='reaction')
     owner_reaction = models.CharField(max_length=5, blank=True, null=True)
     helper_reaction = models.CharField(max_length=5, blank=True, null=True)
     helper_id = models.IntegerField()
+
+    class Reactions:
+        YES = 'yes'
+        NO = 'no'
