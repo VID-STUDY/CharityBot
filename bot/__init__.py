@@ -1,6 +1,6 @@
 from telegram.ext import Updater
 
-from bot import registration, needhelp, canhelp, giveaway, complains, help
+from bot import registration, needhelp, canhelp, giveaway, complains, help, languages, share
 
 from os import getenv
 
@@ -9,6 +9,8 @@ updater = Updater(getenv('TELEGRAM_BOT_TOKEN'), use_context=True)
 dp = updater.dispatcher
 
 dp.add_handler(registration.registration_conversation_handler)
+dp.add_handler(languages.languages_handler)
+dp.add_handler(share.share_handler)
 dp.add_handler(needhelp.help_request_conversation)
 dp.add_handler(canhelp.can_help_conversation)
 dp.add_handler(giveaway.give_away_conversation)
@@ -19,3 +21,7 @@ dp.add_handler(complains.help_request_complain_conversation)
 dp.add_handler(help.help_handler)
 dp.add_handler(help.owner_reaction_handler)
 dp.add_handler(help.helper_reaction_handler)
+
+if getenv('PRODUCTION', False):
+    updater.start_webhook(listen='127.0.0.1', port=getenv('WEBHOOK_PORT'), url_path=getenv('TELEGRAM_BOT_TOKEN'))
+    updater.bot.set_webhook(url='https://{host}/{path}'.format(host=getenv('WEBHOOK_HOST'), path=getenv('TELEGRAM_BOT_TOKEN')))
