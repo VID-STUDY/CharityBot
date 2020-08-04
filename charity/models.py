@@ -3,6 +3,7 @@ from django.db import models
 class TelegramUser(models.Model):
     name = models.CharField(max_length=100)
     phone_number = models.CharField(max_length=20)
+    username = models.CharField(max_length=100, blank=True, null=True)
     language = models.CharField(max_length=2)
 
 
