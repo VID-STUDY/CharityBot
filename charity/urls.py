@@ -3,6 +3,7 @@ from django.urls import path
 from .views.dashboard import DashboardView
 from .views.users import TelegramUserList, TelegramUserDelete, TelegramUserDetail
 from .views.helprequests import HelpRequestsList, HelpRequestDetail, HelpRequestDelete, HelpRequestResolveConflict
+from .views.giveaway import GiveAwayOffersListView, GiveAwayOfferDetail, GiveAwayOfferDelete
 
 
 urlpatterns = [
@@ -14,6 +15,10 @@ urlpatterns = [
     path('help/', HelpRequestsList.as_view(), name='admin-help-index'),
     path('help/<int:pk>/', HelpRequestDetail.as_view(), name='admin-help-detail'),
     path('help/<int:pk>/delete', HelpRequestDelete.as_view(), name='admin-help-delete'),
-    path("help/<int:pk>/resolve/", HelpRequestResolveConflict.as_view(), name="admin-help-resolve")
+    path("help/<int:pk>/resolve/", HelpRequestResolveConflict.as_view(), name="admin-help-resolve"),
+
+    path("offers/", GiveAwayOffersListView.as_view(), name="admin-offers-index"),
+    path('offers/<int:pk>/', GiveAwayOfferDetail.as_view(), name='admin-offers-detail'),
+    path('offers/<int:pk>/delete', GiveAwayOfferDelete.as_view(), name='admin-offers-delete')
 ]
 
