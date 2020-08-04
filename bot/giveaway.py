@@ -70,6 +70,9 @@ def give_away_image(update, context):
     language = context.user_data['user'].language
     photo = message.photo[-1]
     context.user_data['give_away_offer']['photo_telegram_id'] = photo.file_id
+    telegram_file = context.bot.get_file(photo.file_id)
+    telegram_link = 'https://api.telegram.org/file/bot{token}/{file_path}'
+    context.user_data['give_away_offer']['photo_telegram_url'] = telegram_link.format(token=context.bot.token, file_path=telegram_file.file_path)
     give_location_message = strings.get_string('give_away.give_location', language)
     give_location_keyboard = keyboards.get_keyboard('give_away.give_location', language)
     message.reply_text(text=give_location_message, reply_markup=give_location_keyboard)
@@ -85,7 +88,8 @@ def give_away_give_location(update, context):
                                 description=context.user_data['give_away_offer']['description'],
                                 user=context.user_data['user'],
                                 give_away_type=context.user_data['give_away_offer']['type'],
-                                photo_telegram_id=context.user_data['give_away_offer']['photo_telegram_id'])
+                                photo_telegram_id=context.user_data['give_away_offer']['photo_telegram_id'],
+                                photo_telegram_url=context.user_data['give_away_offer']['photo_telegram_url'])
     del context.user_data['give_away_offer']
     success_message = strings.get_string('give_away.success', language)
     Navigation.to_main_menu(update, context, message=success_message)

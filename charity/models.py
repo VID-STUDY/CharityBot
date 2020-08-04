@@ -39,6 +39,7 @@ class GiveAwayOffer(models.Model):
     give_away_type = models.CharField(max_length=20)
     description = models.CharField(max_length=1024)
     photo_telegram_id = models.CharField(max_length=150, null=True, blank=True)
+    photo_telegram_url = models.CharField(max_length=500, null=True, blank=True)
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
 
 
