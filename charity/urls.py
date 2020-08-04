@@ -4,6 +4,7 @@ from .views.dashboard import DashboardView
 from .views.users import TelegramUserList, TelegramUserDelete, TelegramUserDetail
 from .views.helprequests import HelpRequestsList, HelpRequestDetail, HelpRequestDelete, HelpRequestResolveConflict
 from .views.giveaway import GiveAwayOffersListView, GiveAwayOfferDetail, GiveAwayOfferDelete
+from .views.bot import StartBotView
 
 
 urlpatterns = [
@@ -19,6 +20,8 @@ urlpatterns = [
 
     path("offers/", GiveAwayOffersListView.as_view(), name="admin-offers-index"),
     path('offers/<int:pk>/', GiveAwayOfferDetail.as_view(), name='admin-offers-detail'),
-    path('offers/<int:pk>/delete', GiveAwayOfferDelete.as_view(), name='admin-offers-delete')
+    path('offers/<int:pk>/delete', GiveAwayOfferDelete.as_view(), name='admin-offers-delete'),
+
+    path('bot/start/', StartBotView.as_view())
 ]
 
