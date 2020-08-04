@@ -85,6 +85,13 @@ def get_keyboard(key, language='ru') -> Union[ReplyKeyboardRemove, ReplyKeyboard
             [get_string('cancel', language)]
         ]
         return _create_keyboard(keyboard)
+    elif key == 'languages.select':
+        keyboard = []
+        if language == 'ru':
+            keyboard.append([InlineKeyboardButton(get_string('languages.uz'), callback_data='language:uz')])
+        elif language == 'uz':
+            keyboard.append([InlineKeyboardButton(get_string('languages.ru'), callback_data='language:ru')])
+        return InlineKeyboardMarkup(keyboard)
     else:
         return _create_keyboard([['no_keyboard']])
 

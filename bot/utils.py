@@ -1,3 +1,4 @@
+from telegram import ParseMode
 from bot.resources import strings, keyboards
 from telegram.ext import BaseFilter
 from math import radians, cos, sin, asin, sqrt
@@ -10,7 +11,10 @@ class Navigation:
         if message:
             main_menu_message = message
         main_menu_keyboard = keyboards.get_keyboard('main_menu', context.user_data['user'].language)
-        update.message.reply_text(text=main_menu_message, reply_markup=main_menu_keyboard)
+        if update.message:
+            update.message.reply_text(text=main_menu_message, reply_markup=main_menu_keyboard, parse_mode=ParseMode.HTML)
+        else:
+            context.bot.send_message(chat_id=update.effective_chat.id, reply_markup=main_menu_keyboard, text=main_menu_message, parse_mode=ParseMode.HTML)
 
 
 class CharityFilters:
@@ -34,6 +38,16 @@ class CharityFilters:
         def filter(self, message):
             return message.text and ((strings.get_string('cancel', 'ru') in message.text) or
                                     (strings.get_string('cancel', 'uz') in message.text))
+    
+    class LanguagesFilter(BaseFilter):
+        def filter(self, message):
+            return message.text and ((strings.get_string('menu.chage_language', 'ru') in message.text) or 
+                                      strings.get_string('menu.chage_language', 'uz') in message.text)
+    
+    class ShareFiler(BaseFilter):
+        def filter(self, message):
+            return message.text and ((strings.get_string('menu.share', 'ru') in message.text) or 
+                                      strings.get_string('menu.share', 'uz') in message.text)
 
 
 class Geolocation:
