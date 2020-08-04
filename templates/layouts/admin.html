@@ -101,7 +101,7 @@
                     <div class="content-side content-side-full">
                         <ul class="nav-main">
                             <li><a href="{% url 'admin-home' %}"><i class="fa fa-dashboard"></i> Главная</a></li>
-                            <li><a href="{% url 'admin-users-index' %}"><i class="si si-users"></i> Пользователи</a></li>
+                            <li><a href="{% url 'admin-users-index' %}" {% if 'users' in request.path %}class="active"{% endif %}><i class="si si-users"></i> Пользователи</a></li>
                         </ul>
                     </div>
                     <!-- END Side Navigation -->
