@@ -61,6 +61,8 @@ def owner_reaction(update: Update, context: CallbackContext):
         # If owner said "No" but helper said "Yes"
         message = strings.get_string('reaction.owner.helper_say_yes', user.language)
         query.edit_message_text(text=message)
+        help_request.has_conflict = True
+        help_request.save()
         message = strings.get_string('reaction.helper.owner_say_no', user.language)
         context.bot.send_message(chat_id=reaction.helper_id, text=message)
     else:
@@ -106,6 +108,8 @@ def helper_reaction(update: Update, context: CallbackContext):
         message = strings.get_string('reaction.helper.owner_say_no', user.language)
         query.edit_message_text(text=message)
         message = strings.get_string('reaction.owner.helper_say_yes', user.language)
+        help_request.has_conflict = True
+        help_request.save()
         context.bot.send_message(chat_id=reaction.help_request.user.id, text=message)
     else:
         # If owner said "Yes"

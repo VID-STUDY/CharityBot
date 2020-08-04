@@ -15,6 +15,7 @@ class HelpRequest(models.Model):
     user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE)
     helper = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True, related_name='helped_requests')
     hidden = models.BooleanField(default=False)
+    has_conflict = models.BooleanField(default=False)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
