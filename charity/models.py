@@ -22,12 +22,15 @@ class HelpRequest(models.Model):
 
     class Meta:
         get_latest_by = 'created_at'
+    
+    def is_completted(self):
+        return self.reaction and self.reaction.owner_reaction == HelpRequestReaction.Reactions.YES
 
 
 class HelpRequestComplain(models.Model):
     text = models.CharField(max_length=500)
     user_from = models.ForeignKey(TelegramUser, on_delete=models.SET_NULL, blank=True, null=True)
-    help_request = models.ForeignKey(HelpRequest, on_delete=models.CASCADE)
+    help_request = models.ForeignKey(HelpRequest, on_delete=models.CASCADE, related_name='complains')
 
 
 class GiveAwayOffer(models.Model):
