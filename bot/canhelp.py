@@ -29,21 +29,35 @@ def can_help_location(update, context):
     longitude = location.longitude
     all_help_requests = HelpRequest.objects.filter(hidden=False)
     results = []
+    language = context.user_data['user'].language
+    far_away = False
+    if not all_help_requests:
+        empty_message = strings.get_string('can_help.empty', language)
+        Navigation.to_main_menu(update, context, message=empty_message)
+        return ConversationHandler.END
     for request in all_help_requests:
+        # Find all requests within 1 kilometer
         distance = Geolocation.distance_between_two_points((latitude, longitude), (request.latitude, request.longitude))
         if distance <= 1:
             results.append({
                 'distance': distance,
                 'request': request
             })
-    language = context.user_data['user'].language
     if not results:
-        empty_message = strings.get_string('can_help.empty', language)
-        Navigation.to_main_menu(update, context, message=empty_message)
-        return ConversationHandler.END
+        # If there aren't requests within 1 kilometer, find all requests 
+        for request in all_help_requests:
+            distance = Geolocation.distance_between_two_points((latitude, longitude), (request.latitude, request.longitude))
+            results.append({
+                'distance': distance,
+                'request': request
+            })
+        far_away = True
     exists_message = strings.get_string('can_help.exists', language)
     Navigation.to_main_menu(update, context, message=exists_message)
     results = sorted(results, key=lambda i: i['distance'])
+    if far_away:
+        # If found requests are far away, show first 10 elements
+        results = results[:10]
     for result in results:
         request_message = strings.from_help_request_distance(result, language)
         request_keyboard = keyboards.from_help_request_keyboard(result['request'], language)
