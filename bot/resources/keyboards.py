@@ -19,7 +19,7 @@ def get_keyboard(key, language='ru') -> Union[ReplyKeyboardRemove, ReplyKeyboard
         keyboard = [
             [get_string('menu.need_help', language), get_string('menu.can_help', language)],
             [get_string('menu.give_away', language)],
-            [get_string('menu.get_it_for_free', language)]
+            [get_string('menu.get_it_for_free', language)],
             [get_string('menu.share', language)],
             [get_string('menu.chage_language', language)]
         ]
