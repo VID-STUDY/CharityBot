@@ -33,6 +33,11 @@ class CharityFilters:
         def filter(self, message):
             return message.text and ((strings.get_string('menu.give_away', 'ru') in message.text) or
                                     strings.get_string('menu.give_away', 'uz') in message.text)
+
+    class GetItForFreeFilter(BaseFilter):
+        def filter(self, message):
+            return message.text and ((strings.get_string('menu.get_it_for_free', 'ru') in message.text) or
+                                    strings.get_string('menu.get_it_for_free', 'uz') in message.text)
     
     class CancelFilter(BaseFilter):
         def filter(self, message):

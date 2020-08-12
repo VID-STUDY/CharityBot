@@ -6,32 +6,17 @@ from charity.models import TelegramUser, GiveAwayOffer
 from .resources import strings, keyboards
 
 
-ACTION, TYPE, DESCRIPTION, IMAGE, GIVE_LOCATION, GET_LOCATION = range(6)
-
-
-def give_away(update, context):
-    message = update.message
-    if 'user' not in context.user_data:
-        try:
-            user = TelegramUser.objects.get(pk=message.from_user.id)
-        except TelegramUser.DoesNotExist:
-            return ConversationHandler.END
-        context.user_data['user'] = user
-    language = context.user_data['user'].language
-    start_message = strings.get_string('give_away.start', language)
-    start_keyboard = keyboards.get_keyboard('give_away.start', language)
-    message.reply_text(text=start_message, reply_markup=start_keyboard)
-    return ACTION
+TYPE, DESCRIPTION, IMAGE, GIVE_LOCATION, GET_LOCATION = range(5)
 
 
 def give_away_action(update, context):
     message = update.message
     language = context.user_data['user'].language
-    if strings.get_string('give_away.give', language) in message.text:
+    if strings.get_string('menu.give_away', language) in message.text:
         reply_message = strings.get_string('give_away.type', language)
         reply_keyboard = keyboards.get_keyboard('give_away.type', language)
         NEXT_STEP = TYPE
-    elif strings.get_string('give_away.get', language) in message.text:
+    elif strings.get_string('menu.get_it_for_free', language) in message.text:
         reply_message = strings.get_string('give_away.get_location', language)
         reply_keyboard = keyboards.get_keyboard('give_away.get_location', language)
         NEXT_STEP = GET_LOCATION
@@ -177,9 +162,8 @@ def give_it_away(update, context):
 
 
 give_away_conversation = ConversationHandler(
-    entry_points=[MessageHandler(CharityFilters.GiveAwayFiler(), give_away)],
+    entry_points=[MessageHandler(CharityFilters.GiveAwayFiler(), give_away_action), MessageHandler(CharityFilters.GetItForFreeFilter(), give_away_action)],
     states={
-        ACTION: [MessageHandler(CharityFilters.CancelFilter(), cancel), MessageHandler(Filters.text, give_away_action)],
         TYPE: [MessageHandler(CharityFilters.CancelFilter(), cancel), MessageHandler(Filters.text, give_away_type)],
         DESCRIPTION: [MessageHandler(CharityFilters.CancelFilter(), cancel), MessageHandler(Filters.text, give_away_description)],
         IMAGE: [MessageHandler(CharityFilters.CancelFilter(), cancel), MessageHandler(Filters.photo, give_away_image)],
