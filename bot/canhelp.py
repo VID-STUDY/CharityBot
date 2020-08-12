@@ -43,7 +43,7 @@ def can_help_location(update, context):
                 'distance': distance,
                 'request': request
             })
-    if not results:
+    if not results or len(results) < 10:
         # If there aren't requests within 1 kilometer, find all requests 
         for request in all_help_requests:
             distance = Geolocation.distance_between_two_points((latitude, longitude), (request.latitude, request.longitude))
