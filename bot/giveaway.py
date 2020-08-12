@@ -102,6 +102,12 @@ def give_away_get_location(update, context):
     longitude = message.location.longitude
     give_away_offers = GiveAwayOffer.objects.all()
     results = []
+    language = context.user_data['user'].language
+    if not give_away_offers:
+        empty_message = strings.get_string('give_away.empty', language)
+        Navigation.to_main_menu(update, context, message=empty_message)
+        return ConversationHandler.END
+    far_away = False
     for offer in give_away_offers:
         distance = Geolocation.distance_between_two_points((latitude, longitude), (offer.latitude, offer.longitude))
         if distance <= 1:
@@ -109,12 +115,17 @@ def give_away_get_location(update, context):
                 'distance': distance,
                 'offer': offer
             })
-    language = context.user_data['user'].language
-    if not results:
-        empty_message = strings.get_string('give_away.empty', language)
-        Navigation.to_main_menu(update, context, message=empty_message)
-        return ConversationHandler.END
+    if not results or len(results) < 10:
+        for offer in give_away_offers:
+            distance = Geolocation.distance_between_two_points((latitude, longitude), (offer.latitude, offer.longitude))
+            results.append({
+                'distance': distance,
+                'offer': offer
+            })
+        far_away = True
     results = sorted(results, key=lambda i: i['distance'])
+    if far_away:
+        results = results[:10]
     exists_message = strings.get_string('give_away.exists', language)
     Navigation.to_main_menu(update, context, message=exists_message)
     for result in results:
